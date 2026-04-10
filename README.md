@@ -1,4 +1,4 @@
-# 🎬 AI Cinematic Dubbing Studio 🎙️🌍
+# AI Cinematic Dubbing Studio 
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Docker](https://img.shields.io/badge/docker-ready-blue)
