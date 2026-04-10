@@ -1,0 +1,9 @@
+coqui-tts
+pydub
+noisereduce
+scipy
+demucs
+gradio
+requests
+fastapi
+uvicorn

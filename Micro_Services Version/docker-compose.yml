@@ -1,0 +1,73 @@
+version: '3.8'
+
+networks:
+  ai_studio_net:
+    driver: bridge
+
+services:
+  perception:
+    build: ./service_a_perception
+    container_name: dub_service_a
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HF_HOME=/app/data/models_cache/hf 
+      - TTS_HOME=/app/data/models_cache/tts 
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./data:/app/data
+    networks:
+      - ai_studio_net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+  translation:
+    build: ./service_b_translation
+    container_name: dub_service_b
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HF_HOME=/app/data/models_cache/hf 
+      - TTS_HOME=/app/data/models_cache/tts 
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./data:/app/data
+    networks:
+      - ai_studio_net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+  voice_ui:
+    build: ./service_c_voice
+    container_name: dub_service_c
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HF_HOME=/app/data/models_cache/hf
+      - TTS_HOME=/app/data/models_cache/tts 
+      - COQUI_TOS_AGREED=1 
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - perception
+      - translation
+    networks:
+      - ai_studio_net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
