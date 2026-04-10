@@ -1,14 +1,15 @@
 --extra-index-url https://download.pytorch.org/whl/cu121
-torch==2.1.2
-torchaudio==2.1.2
-torchvision==0.16.2
+torch==2.5.1
+torchaudio==2.5.1
+torchvision==0.20.1
+pyworld==0.3.5
+coqui-tts
 faster-whisper
 pyannote.audio
 numpy<2.0
-transformers==4.40.0 
+transformers==4.40.0
 huggingface-hub==0.22.2
 demucs
-coqui-tts
 pydub
 noisereduce
 scipy
