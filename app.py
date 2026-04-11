@@ -1062,4 +1062,21 @@ with gr.Blocks(theme=custom_theme, css=css) as ui:
         match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11}).*", url)
         if match:
             vid = match.group(1)
-            iframe = f'<div style="animation: slideDown 0.4s ease-out; margin-top: 10px;"><iframe width="100%" height="200" src="https://www.youtube.com/embed/{vid}" frameborder="0" all... (2 KB left)
+            iframe = f'<div style="animation: slideDown 0.4s ease-out; margin-top: 10px;"><iframe width="100%" height="200" src="https://www.youtube.com/embed/{vid}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 10px; border: 1px solid #1E1B2E;"></iframe></div>'
+            return gr.update(visible=True, value=iframe), gr.update(visible=False, value=None)
+        return gr.update(visible=False, value=""), gr.update(visible=False, value=None)
+
+    yt_url.change(fn=update_yt_preview, inputs=[yt_url], outputs=[yt_preview, vid_in])
+
+    def handle_upload(filepath):
+        if filepath is None:
+            return gr.update(visible=False, value=None), gr.update(value="")
+        # Ensure we extract the string path from the temporary file object that Gradio > 3.0 sends via UploadButton
+        val = getattr(filepath, "name", filepath)
+        # return the string path to vid_in, clear yt_url so we don't accidentally dub from youtube
+        return gr.update(visible=True, value=val), gr.update(value="")
+    
+    upload_btn.upload(fn=handle_upload, inputs=[upload_btn], outputs=[vid_in, yt_url])
+
+if __name__ == "__main__":
+    ui.queue().launch(server_name="0.0.0.0", server_port=7860)
