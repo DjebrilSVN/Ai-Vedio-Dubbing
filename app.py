@@ -1079,4 +1079,4 @@ with gr.Blocks(theme=custom_theme, css=css) as ui:
     upload_btn.upload(fn=handle_upload, inputs=[upload_btn], outputs=[vid_in, yt_url])
 
 if __name__ == "__main__":
-    ui.queue().launch(server_name="0.0.0.0", server_port=7860)
+    ui.queue().launch(server_name="0.0.0.0", server_port=7860,share=True)
